@@ -1,1 +1,1 @@
-# NoThankYou
+This addon allows you to block or redirect unwanted messages, notifications to the chat and alter behavior or some boring systems of the UI
