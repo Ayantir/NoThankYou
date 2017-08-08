@@ -10,6 +10,8 @@ local strings = {
 	NOTY_INSECT_TORCHBUG = "Torchbug", -- Don't change
 	NOTY_INSECT_WASP = "Wasp", -- Don't change
 	NOTY_INSECT_FLESHFLIES = "Fleshflies", -- Don't change
+	NOTY_INSECT_DRAGONFLY = "Dragonfly", -- Don't change
+	NOTY_INSECT_NETCHCALF = "Netch Calf", -- Don't change
 	
 	NOTY_ENTERING_GROUP_AREA = "Entering Group Area.", -- Don't change
 	NOTY_LEAVING_GROUP_AREA = "Leaving Group Area.", -- Don't change

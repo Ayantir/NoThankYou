@@ -7,6 +7,8 @@ SafeAddString(NOTY_INSECT_BUTTERFLY,				"Schmetterling", 1) -- Don't change
 SafeAddString(NOTY_INSECT_TORCHBUG,					"Fackelkäfer", 1) -- Don't change
 SafeAddString(NOTY_INSECT_WASP,						"Wespe", 1) -- Don't change
 SafeAddString(NOTY_INSECT_FLESHFLIES,				"Fleischfliegen", 1) -- Don't change
+SafeAddString(NOTY_INSECT_DRAGONFLY,				"Libelle", 1) -- Don't change
+SafeAddString(NOTY_INSECT_NETCHCALF,				"Netchkalb", 1) -- Don't change
 
 SafeAddString(NOTY_RAID_COMPLETE,					" haben", 1) -- Don't change
 SafeAddString(NOTY_RAID_OTHERS,						"und <<1>> andere ", 1) -- Don't change

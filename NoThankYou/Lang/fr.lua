@@ -7,6 +7,8 @@ SafeAddString(NOTY_INSECT_BUTTERFLY,					"Papillon", 1) -- Don't change
 SafeAddString(NOTY_INSECT_TORCHBUG,						"Flammouche", 1) -- Don't change
 SafeAddString(NOTY_INSECT_WASP,							"Guêpe", 1) -- Don't change
 SafeAddString(NOTY_INSECT_FLESHFLIES,					"Mouches à viande", 1) -- Don't change
+SafeAddString(NOTY_INSECT_DRAGONFLY,					"Libellule", 1) -- Don't change
+SafeAddString(NOTY_INSECT_NETCHCALF,					"Jeune netch", 1) -- Don't change
 
 SafeAddString(NOTY_ENTERING_GROUP_AREA,				"Vous entrez dans une zone de groupe.", 1) -- Don't change
 SafeAddString(NOTY_LEAVING_GROUP_AREA,					"Sortie de la zone de groupe.", 1) -- Don't change

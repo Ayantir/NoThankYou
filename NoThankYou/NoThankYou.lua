@@ -622,14 +622,8 @@ local function HookReticleTake()
 			if SV.reticleTake then
 				local action, interactableName = GetGameCameraInteractableActionInfo()
 				if action and interactableName then
-					if (action == GetString(NOTY_INTERACTION_TAKE)) then
-						if (interactableName == GetString(NOTY_INSECT_BUTTERFLY)
-						or interactableName == GetString(NOTY_INSECT_TORCHBUG)
-						or interactableName == GetString(NOTY_INSECT_WASP)
-						or interactableName == GetString(NOTY_INSECT_FLESHFLIES))
-						then
-							return true
-						end
+					if action == GetString(NOTY_INTERACTION_TAKE) and GetUnitReaction("reticle") == UNIT_REACTION_HOSTILE then
+						return true
 					end
 				end
 			end
