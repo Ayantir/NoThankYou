@@ -627,8 +627,8 @@ local function HookReticleTake()
 						if (interactableName == GetString(NOTY_INSECT_BUTTERFLY)
 						or interactableName == GetString(NOTY_INSECT_TORCHBUG)
 						or interactableName == GetString(NOTY_INSECT_WASP)
-						or interactableName == GetString(NOTY_INSECT_FLESHFLIES))
-						or interactableName == GetString(NOTY_INSECT_DRAGONFLY))
+						or interactableName == GetString(NOTY_INSECT_FLESHFLIES)
+						or interactableName == GetString(NOTY_INSECT_DRAGONFLY)
 						or interactableName == GetString(NOTY_INSECT_NETCHCALF))
 						then
 							return true
