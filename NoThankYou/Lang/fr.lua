@@ -226,6 +226,9 @@ SafeAddString(NOTYOU_NOCRAFTBAG_NOTIF_TOOLTIP,		"Ne pas notifier que mes objets 
 SafeAddString(NOTYOU_NOCHATAUTOCOMPLETE,				"Désactiver l'autocompletion du chat", 1)
 SafeAddString(NOTYOU_NOCHATAUTOCOMPLETE_TOOLTIP,	"Désactivera l'autocompletion de la fenêtre de chat comme les commande de changement de canal de discussion, les commandes d'emote, etc", 1)
 
+SafeAddString(NOTYOU_NOCHATDISABLE,						"Désactiver la minimisation du chat à la boutique", 1)
+SafeAddString(NOTYOU_NOCHATDISABLE_TOOLTIP,			"Désactivera la minimisation de la fenêtre de chat à la boutique de guilde", 1)
+
 SafeAddString(NOTYOU_LUA_HEADER,							"Erreurs Lua", 1)
 SafeAddString(NOTYOU_LUA_MEMORY,							"Rediriger les erreurs de mémoire Lua vers :", 1)
 SafeAddString(NOTYOU_LUA_MEMORY_TOOLTIP,				"Rediriger les erreurs de mémoire Lua vers une fenêtre permettant d'augmenter le paramètre plutôt que d'afficher la fenêtre originale", 1)

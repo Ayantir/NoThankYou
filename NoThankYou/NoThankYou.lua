@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "7"
+local ADDON_VERSION = "7.2"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -75,6 +75,7 @@ local defaults = {
 	hideTamriel = false,
 	dontAcceptWritQuest = false,
 	disableChatAutoComplete = false,
+	chatForTradingHouse = false
 }
 
 for i = 1, MAX_GUILDS do
@@ -622,8 +623,16 @@ local function HookReticleTake()
 			if SV.reticleTake then
 				local action, interactableName = GetGameCameraInteractableActionInfo()
 				if action and interactableName then
-					if action == GetString(NOTY_INTERACTION_TAKE) and GetUnitReaction("reticle") == UNIT_REACTION_HOSTILE then
-						return true
+					if (action == GetString(NOTY_INTERACTION_TAKE)) then
+						if (interactableName == GetString(NOTY_INSECT_BUTTERFLY)
+						or interactableName == GetString(NOTY_INSECT_TORCHBUG)
+						or interactableName == GetString(NOTY_INSECT_WASP)
+						or interactableName == GetString(NOTY_INSECT_FLESHFLIES))
+						or interactableName == GetString(NOTY_INSECT_DRAGONFLY))
+						or interactableName == GetString(NOTY_INSECT_NETCHCALF))
+						then
+							return true
+						end
 					end
 				end
 			end
@@ -854,6 +863,30 @@ local function DontRotateGameCamera()
 	
 end
 
+local chatScene
+local function DisableChatMinimize()
+
+	local fragmentToRemove = MINIMIZE_CHAT_FRAGMENT
+	local scene = TRADING_HOUSE_SCENE
+	
+	if SV.chatForTradingHouse then
+		local sceneToSave = true
+		if scene:HasFragment(fragmentToRemove) then
+			scene:RemoveFragment(fragmentToRemove)
+			if sceneToSave then
+				sceneToSave = false
+				chatScene = scene
+				chatScene.toRestore = true
+			end
+		end
+	else
+		if chatScene and chatScene.toRestore then
+			chatScene:AddFragment(fragmentToRemove)
+		end
+	end
+	
+end
+
 local function HookFenceDialog()
 	local function ShowDialog_Hook(name, data)
 		if name == "CANT_BUYBACK_FROM_FENCE" then
@@ -910,7 +943,7 @@ end
 
 local function HookImproveDialog()
 	local function ShowDialog_Hook(name, data)
-		if name == "CONFIRM_IMPROVE_ITEM" then
+		if name == "CONFIRM_IMPROVE_ITEM" or name == "CONFIRM_IMPROVE_LOCKED_ITEM" or name == "GAMEPAD_CONFIRM_IMPROVE_LOCKED_ITEM" then
 			if SV.improveDialog then
 				ImproveSmithingItem(data.bagId, data.slotIndex, data.boostersToApply)
 				return true
@@ -1021,6 +1054,7 @@ local function RemovePinsFromMaps()
 		[143] = true, -- Greenshade
 		[162] = true, -- Reapers
 		[67] = true, -- Ebonheart
+		[173] = true, -- Dhalmora
 		[28] = true, -- Deshaan
 		[48] = true, -- Shadowfen
 		[109] = true, -- The Rift
@@ -1637,6 +1671,17 @@ local function BuildSettingsMenu()
 			end,
 			default = defaults.disableChatAutoComplete,
 		},
+		{
+			type = "checkbox",
+			name = GetString(NOTYOU_NOCHATDISABLE),
+			tooltip = GetString(NOTYOU_NOCHATDISABLE_TOOLTIP),
+			getFunc = function() return SV.chatForTradingHouse end,
+			setFunc = function(value)
+				SV.chatForTradingHouse = value
+				DisableChatMinimize()
+			end,
+			default = defaults.chatForTradingHouse,
+		},
 		
 	}
 	--Guild Alerts
@@ -1886,6 +1931,7 @@ local function OnAddonLoaded(event, name)
 		HookReportItemFromInventory()
 		RemovePinsFromMaps()
 		DisableChatAutoComplete()
+		DisableChatMinimize()
 
 		BuildSettingsMenu()
 

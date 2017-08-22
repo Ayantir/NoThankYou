@@ -215,6 +215,9 @@ local strings = {
 	NOTYOU_NOCHATAUTOCOMPLETE = "Disable Chat autocompletion",
 	NOTYOU_NOCHATAUTOCOMPLETE_TOOLTIP = "Will disable chat autocompletion such as emote switchs & channel switchs",
 	
+	NOTYOU_NOCHATDISABLE = "Disable Chat Minimize at Trading House",
+	NOTYOU_NOCHATDISABLE_TOOLTIP = "Will disable chat Minimization at trading house scene",
+	
 	NOTYOU_LUA_HEADER = "Lua errors",
 	NOTYOU_LUA_MEMORY = "Redirect Lua Memory error to:",
 	NOTYOU_LUA_MEMORY_TOOLTIP = "Redirect Lua Memory error to a notification or a dialog instead than the original popup",
