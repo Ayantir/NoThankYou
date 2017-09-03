@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "7.2"
+local ADDON_VERSION = "7.3"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -629,7 +629,8 @@ local function HookReticleTake()
 						or interactableName == GetString(NOTY_INSECT_WASP)
 						or interactableName == GetString(NOTY_INSECT_FLESHFLIES)
 						or interactableName == GetString(NOTY_INSECT_DRAGONFLY)
-						or interactableName == GetString(NOTY_INSECT_NETCHCALF))
+						or interactableName == GetString(NOTY_INSECT_NETCHCALF)
+						or interactableName == GetString(NOTY_INSECT_FETCHERFLY))
 						then
 							return true
 						end
@@ -981,15 +982,12 @@ local function HookCrownCratesSystem()
 end
 
 local function DoDisableChatAutoComplete()
-
-	local function AutoCompleteTarget_Hook()
+	local function GetAutoCompletionResults_Hook()
 		return SV.disableChatAutoComplete
 	end
-	
-	ZO_PreHook(CHAT_SYSTEM.textEntry, "AutoCompleteTarget", AutoCompleteTarget_Hook)
-	
+	ZO_PreHook(SLASH_COMMAND_AUTO_COMPLETE, "GetAutoCompletionResults", GetAutoCompletionResults_Hook)
 end
-	
+
 local function OnPlayerActivated_DisableChatAutoComplete()
 	EVENT_MANAGER:UnregisterForEvent(ADDON_NAME, EVENT_PLAYER_ACTIVATED)
 	DoDisableChatAutoComplete()
