@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "7.3"
+local ADDON_VERSION = "7.4"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -75,7 +75,9 @@ local defaults = {
 	hideTamriel = false,
 	dontAcceptWritQuest = false,
 	disableChatAutoComplete = false,
-	chatForTradingHouse = false
+	chatForTradingHouse = false,
+	noBindAlert = false,
+	noPortOnLeader = 0,
 }
 
 for i = 1, MAX_GUILDS do
@@ -339,15 +341,15 @@ local function AlertTextThrottling()
 end
 
 local function DeleteEmptyMailHook()
-	local function Delete_Hook(self)
-		if SV.emptyMail and self.mailId then
-			if self:IsMailDeletable() then
-				self:ConfirmDelete(self.mailId)
+	local function ShowDialog_Hook(name, data)
+		if name == "DELETE_MAIL" then
+			if SV.emptyMail then
+				MAIL_INBOX:ConfirmDelete(MAIL_INBOX.mailId)
 				return true
 			end
 		end
 	end
-	ZO_PreHook(MAIL_INBOX, "Delete", Delete_Hook)
+	ZO_PreHook("ZO_Dialogs_ShowDialog", ShowDialog_Hook)
 end
 
 local function NoUniversalStones()
@@ -1039,6 +1041,43 @@ local function HookReportItemFromInventory()
 	ZO_PreHook(ZO_InventorySlotActions, "AddSlotAction", AddSlotActionHook)
 end
 
+local function HookBindAlerts()
+	local function ShowDialog_Hook(name, data)
+		if name == "CONFIRM_EQUIP_ITEM" then
+			if SV.noBindAlert then
+				data.onAcceptCallback()
+				return true
+			end
+		end
+	end
+	ZO_PreHook("ZO_Dialogs_ShowDialog", ShowDialog_Hook)
+end
+
+local function NoPortToLeader()
+
+	local cannotJump = {
+		[181] = true, -- Cyrodiil
+		[584] = true, -- Imperial City
+		[643] = true, -- Imperial Sewers
+	}
+
+	local function ShowDialog_Hook(name, data)
+		if name == "JUMP_TO_GROUP_LEADER_WORLD_PROMPT" then
+			if SV.noPortOnLeader == 1 then
+				local groupLeaderUnitTag = GetGroupLeaderUnitTag()
+				local groupLeaderZoneIndex = GetUnitZoneIndex(groupLeaderUnitTag)
+				local groupLeaderZoneId = GetZoneId(groupLeaderZoneIndex)
+				if cannotJump[groupLeaderZoneId] then
+					return true
+				end
+			elseif SV.noPortOnLeader == 2 then
+				return true
+			end
+		end
+	end
+	ZO_PreHook("ZO_Dialogs_ShowDialog", ShowDialog_Hook)
+end
+
 local function RemovePinsFromMaps()
 
 	local isCapitalWayshrine = {
@@ -1185,6 +1224,7 @@ local function HandleLuaErrorEvent()
 end
 
 local function BuildSettingsMenu()
+
 	local panelData = {
 		type = "panel",
 		name = "No, thank you!",
@@ -1195,7 +1235,7 @@ local function BuildSettingsMenu()
 		registerForDefaults = true,
 		website = ADDON_WEBSITE,
 	}
-	
+
 	local guildInvites = { GetString(NOTY_GUILD_INV_OPTION_0), GetString(NOTY_GUILD_INV_OPTION_1), GetString(NOTY_GUILD_INV_OPTION_2) }
 	local guildInvitesLookup = { [GetString(NOTY_GUILD_INV_OPTION_0)] = 0, [GetString(NOTY_GUILD_INV_OPTION_1)] = 1, [GetString(NOTY_GUILD_INV_OPTION_2)] = 2 }
 
@@ -1204,42 +1244,45 @@ local function BuildSettingsMenu()
 
 	local loreLibraryMode = { GetString(NOTY_AVA_MODE_OPTION_0), GetString(NOTY_AVA_MODE_OPTION_1), GetString(NOTY_AVA_MODE_OPTION_2) }
 	local loreLibraryModeLookup = { [GetString(NOTY_AVA_MODE_OPTION_0)] = 0, [GetString(NOTY_AVA_MODE_OPTION_1)] = 1, [GetString(NOTY_AVA_MODE_OPTION_2)] = 2 }
-	
+
 	local skillsProgressionMode = { GetString(NOTY_AVA_MODE_OPTION_0), GetString(NOTY_AVA_MODE_OPTION_1), GetString(NOTY_AVA_MODE_OPTION_2) }
 	local skillsProgressionModeLookup = { [GetString(NOTY_AVA_MODE_OPTION_0)] = 0, [GetString(NOTY_AVA_MODE_OPTION_1)] = 1, [GetString(NOTY_AVA_MODE_OPTION_2)] = 2 }
-	
+
 	local groupZoneMode = { GetString(NOTY_AVA_MODE_OPTION_0), GetString(NOTY_AVA_MODE_OPTION_1), GetString(NOTY_AVA_MODE_OPTION_2) }
 	local groupZoneModeLookup = { [GetString(NOTY_AVA_MODE_OPTION_0)] = 0, [GetString(NOTY_AVA_MODE_OPTION_1)] = 1, [GetString(NOTY_AVA_MODE_OPTION_2)] = 2 }
-	
+
 	local soundMode = { GetString(NOTY_SOUND_MODE_OPTION_0), GetString(NOTY_SOUND_MODE_OPTION_1), GetString(NOTY_SOUND_MODE_OPTION_2), GetString(NOTY_SOUND_MODE_OPTION_3) }
 	local soundModeLookup = { [GetString(NOTY_SOUND_MODE_OPTION_0)] = 0, [GetString(NOTY_SOUND_MODE_OPTION_1)] = 1, [GetString(NOTY_SOUND_MODE_OPTION_2)] = 2, [GetString(NOTY_SOUND_MODE_OPTION_3)] = 3 }
-	
+
 	local guildAlertsMode = { GetString(NOTY_GALERTS_OPTION_0), GetString(NOTY_GALERTS_OPTION_1), GetString(NOTY_GALERTS_OPTION_2) }
 	local guildAlertsModeLookup = { [GetString(NOTY_GALERTS_OPTION_0)] = 0, [GetString(NOTY_GALERTS_OPTION_1)] = 1, [GetString(NOTY_GALERTS_OPTION_2)] = 2 }
-	
+
 	local raidMode = { GetString(NOTY_RAID_OPTION_0), GetString(NOTY_RAID_OPTION_1), GetString(NOTY_RAID_OPTION_2), GetString(NOTY_RAID_OPTION_3) }
 	local raidModeLookup = { [GetString(NOTY_RAID_OPTION_0)] = 0, [GetString(NOTY_RAID_OPTION_1)] = 1, [GetString(NOTY_RAID_OPTION_2)] = 2, [GetString(NOTY_RAID_OPTION_3)] = 3 }
 
 	local motdMode = { GetString(NOTY_MOTD_OPTION_0), GetString(NOTY_MOTD_OPTION_1), GetString(NOTY_MOTD_OPTION_2) }
 	local motdModeLookup = { [GetString(NOTY_MOTD_OPTION_0)] = 0, [GetString(NOTY_MOTD_OPTION_1)] = 1, [GetString(NOTY_MOTD_OPTION_2)] = 2 }
-	
+
 	local guildLeaveMode = { GetString(NOTY_GUILDLEAVE_OPTION_0), GetString(NOTY_GUILDLEAVE_OPTION_1), GetString(NOTY_GUILDLEAVE_OPTION_2) }
 	local guildLeaveModeLookup = { [GetString(NOTY_GUILDLEAVE_OPTION_0)] = 0, [GetString(NOTY_GUILDLEAVE_OPTION_1)] = 1, [GetString(NOTY_GUILDLEAVE_OPTION_2)] = 2 }
-	
+
 	local luaError = { GetString(NOTY_LUAERR_OPTION_0), GetString(NOTY_LUAERR_OPTION_1) }
 	local luaErrorLookup = { [GetString(NOTY_LUAERR_OPTION_0)] = 0, [GetString(NOTY_LUAERR_OPTION_1)] = 1 }
 
-	 local tamrielWayhsrines = { GetString(NOTY_WAYSHRINE_OPTION_0), GetString(NOTY_WAYSHRINE_OPTION_1), GetString(NOTY_WAYSHRINE_OPTION_2) }
-	 local tamrielWayhsrinesLookup = { [GetString(NOTY_WAYSHRINE_OPTION_0)] = 0, [GetString(NOTY_WAYSHRINE_OPTION_1)] = 1, [GetString(NOTY_WAYSHRINE_OPTION_2)] = 2 }
-	 
-	 local tamrielDungeons = { GetString(NOTY_DUNGEONS_OPTION_0), GetString(NOTY_DUNGEONS_OPTION_1), GetString(NOTY_DUNGEONS_OPTION_2) }
-	 local tamrielDungeonsLookup = { [GetString(NOTY_DUNGEONS_OPTION_0)] = 0, [GetString(NOTY_DUNGEONS_OPTION_1)] = 1, [GetString(NOTY_DUNGEONS_OPTION_2)] = 2 }
-	 
-	 local unownedHouses = { GetString(NOTY_UNOWNED_HOUSES_OPTION_0), GetString(NOTY_UNOWNED_HOUSES_OPTION_1), GetString(NOTY_UNOWNED_HOUSES_OPTION_2) }
-	 local unownedHousesLookup = { [GetString(NOTY_UNOWNED_HOUSES_OPTION_0)] = 0, [GetString(NOTY_UNOWNED_HOUSES_OPTION_1)] = 1, [GetString(NOTY_UNOWNED_HOUSES_OPTION_2)] = 2 }
-	
-	 local ownedHouses = { GetString(NOTY_UNOWNED_HOUSES_OPTION_0), GetString(NOTY_UNOWNED_HOUSES_OPTION_1), GetString(NOTY_UNOWNED_HOUSES_OPTION_2) }
-	 local ownedHousesLookup = { [GetString(NOTY_UNOWNED_HOUSES_OPTION_0)] = 0, [GetString(NOTY_UNOWNED_HOUSES_OPTION_1)] = 1, [GetString(NOTY_UNOWNED_HOUSES_OPTION_2)] = 2 }
+	local tamrielWayhsrines = { GetString(NOTY_WAYSHRINE_OPTION_0), GetString(NOTY_WAYSHRINE_OPTION_1), GetString(NOTY_WAYSHRINE_OPTION_2) }
+	local tamrielWayhsrinesLookup = { [GetString(NOTY_WAYSHRINE_OPTION_0)] = 0, [GetString(NOTY_WAYSHRINE_OPTION_1)] = 1, [GetString(NOTY_WAYSHRINE_OPTION_2)] = 2 }
+
+	local tamrielDungeons = { GetString(NOTY_DUNGEONS_OPTION_0), GetString(NOTY_DUNGEONS_OPTION_1), GetString(NOTY_DUNGEONS_OPTION_2) }
+	local tamrielDungeonsLookup = { [GetString(NOTY_DUNGEONS_OPTION_0)] = 0, [GetString(NOTY_DUNGEONS_OPTION_1)] = 1, [GetString(NOTY_DUNGEONS_OPTION_2)] = 2 }
+
+	local unownedHouses = { GetString(NOTY_UNOWNED_HOUSES_OPTION_0), GetString(NOTY_UNOWNED_HOUSES_OPTION_1), GetString(NOTY_UNOWNED_HOUSES_OPTION_2) }
+	local unownedHousesLookup = { [GetString(NOTY_UNOWNED_HOUSES_OPTION_0)] = 0, [GetString(NOTY_UNOWNED_HOUSES_OPTION_1)] = 1, [GetString(NOTY_UNOWNED_HOUSES_OPTION_2)] = 2 }
+
+	local ownedHouses = { GetString(NOTY_UNOWNED_HOUSES_OPTION_0), GetString(NOTY_UNOWNED_HOUSES_OPTION_1), GetString(NOTY_UNOWNED_HOUSES_OPTION_2) }
+	local ownedHousesLookup = { [GetString(NOTY_UNOWNED_HOUSES_OPTION_0)] = 0, [GetString(NOTY_UNOWNED_HOUSES_OPTION_1)] = 1, [GetString(NOTY_UNOWNED_HOUSES_OPTION_2)] = 2 }
+
+	local noPortOnLeader = { GetString(NOTY_NOPORTONLEADER_0), GetString(NOTY_NOPORTONLEADER_1), GetString(NOTY_NOPORTONLEADER_2) }
+	local noPortOnLeaderLookup = { [GetString(NOTY_NOPORTONLEADER_0)] = 0, [GetString(NOTY_NOPORTONLEADER_1)] = 1, [GetString(NOTY_NOPORTONLEADER_2)] = 2 }
 	
 	local optionsData = {
 		--AvA Messages
@@ -1430,6 +1473,16 @@ local function BuildSettingsMenu()
 			setFunc = function(value) SV.largeGroupDialog = value end,
 			default = defaults.largeGroupDialog,
 		},
+		{
+			type = "dropdown",
+			name = GetString(NOTYOU_NOPORTONLEADER),
+			tooltip = GetString(NOTYOU_NOPORTONLEADER_TOOLTIP),
+			choices = noPortOnLeader,
+			getFunc = function() return noPortOnLeader[SV.noPortOnLeader + 1] end,
+			setFunc = function(value) SV.noPortOnLeader = noPortOnLeaderLookup[value] end,
+			default = noPortOnLeader[defaults.noPortOnLeader + 1],
+		},
+		
 		--Confirmation dialog when crafting
 		{
 			type = "header",
@@ -1588,6 +1641,14 @@ local function BuildSettingsMenu()
 			getFunc = function() return SV.noReportOnItems end,
 			setFunc = function(value) SV.noReportOnItems = value end,
 			default = defaults.noReportOnItems,
+		},
+		{
+			type = "checkbox",
+			name = GetString(NOTYOU_NOBINDALERT),
+			tooltip = GetString(NOTYOU_NOBINDALERT_TOOLTIP),
+			getFunc = function() return SV.noBindAlert end,
+			setFunc = function(value) SV.noBindAlert = value end,
+			default = defaults.noBindAlert,
 		},
 		{ -- Map
 			type = "header",
@@ -1930,6 +1991,8 @@ local function OnAddonLoaded(event, name)
 		RemovePinsFromMaps()
 		DisableChatAutoComplete()
 		DisableChatMinimize()
+		HookBindAlerts()
+		NoPortToLeader()
 
 		BuildSettingsMenu()
 

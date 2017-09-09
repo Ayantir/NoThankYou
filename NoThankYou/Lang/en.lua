@@ -133,6 +133,16 @@ local strings = {
 	NOTYOU_NOREPORTONITEMS = "Don't show \"Get Help\" entry for Items",
 	NOTYOU_NOREPORTONITEMS_TOOLTIP = "Don't show \"Get Help\" entry for Items. This entry is used to report an item to ZOS.",
 	
+	NOTYOU_NOBINDALERT = "Don't warn when trying to equip a bindable item",
+	NOTYOU_NOBINDALERT_TOOLTIP = "Disable the confirmation dilaog when trying to equip an item bind on equip",
+	
+	NOTYOU_NOPORTONLEADER = "Disable porting to group leader dialog",
+	NOTYOU_NOPORTONLEADER_TOOLTIP = "Disable the dialog window inviting you to jump to the group leader position",
+	
+	NOTY_NOPORTONLEADER_0 = "Never",
+	NOTY_NOPORTONLEADER_1 = "When destination is unreachable",
+	NOTY_NOPORTONLEADER_2 = "Always",
+	
 	NOTYOU_TAMRIEL = "Hide everything on Tamriel map",
 	NOTYOU_TAMRIEL_TOOLTIP = "Don't show any icon on Tamriel map",
 	

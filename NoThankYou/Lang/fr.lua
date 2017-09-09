@@ -82,7 +82,7 @@ SafeAddString(NOTYOU_FRIENDS_ACTIVITY_TOOLTIP,		"Supprime les alertes lorsqu'un 
 
 SafeAddString(NOTYOU_TEXT_ALERTS_HEADER,				"Alertes textuelles", 1)
 SafeAddString(NOTYOU_MOB_IMMUNE,							"Bloquer \"Cible immunisée\"", 1)
-SafeAddString(NOTYOU_MOB_IMMUNE_TOOLTIP,				"Supprimer les alertes fréquemment affichées lors des combats contr les cibles immunisées :n- |cFFFFFF".. GetErrorString(162) .."|r\n- |cFFFFFF".. GetErrorString(177) .."|r\n- |cFFFFFF" .. GetString("SI_ACTIONRESULT", ACTION_RESULT_MISSING_EMPTY_SOUL_GEM) .. "|r\n- |cFFFFFF" .. GetString("SI_ACTIONRESULT", ACTION_RESULT_IMMUNE) .. "|r", 1)
+SafeAddString(NOTYOU_MOB_IMMUNE_TOOLTIP,				"Supprimer les alertes fréquemment affichées lors des combats contre les cibles immunisées :\n- |cFFFFFF".. GetErrorString(162) .."|r\n- |cFFFFFF".. GetErrorString(177) .."|r\n- |cFFFFFF" .. GetString("SI_ACTIONRESULT", ACTION_RESULT_MISSING_EMPTY_SOUL_GEM) .. "|r\n- |cFFFFFF" .. GetString("SI_ACTIONRESULT", ACTION_RESULT_IMMUNE) .. "|r", 1)
 SafeAddString(NOTYOU_SCREENSHOT,							"Bloquer \"Capture d'écran sauvegardée\"", 1)
 SafeAddString(NOTYOU_SCREENSHOT_TOOLTIP,				"Supprimer le message lors d'ue capture d'écran :\n- |cFFFFFFCapture d'écran sauvegardée : <chemin>|r", 1)
 SafeAddString(NOTYOU_ENLIGHTENED,						"Bloquer \"Vous êtes éclairé\"", 1)
@@ -140,6 +140,16 @@ SafeAddString(NOTYOU_NOWRITQUESTS_TOOLTIP,			"Ne pas afficher les quêtes de com
 
 SafeAddString(NOTYOU_NOREPORTONITEMS,					"Supprimer l'entrée \"Demander Aide\"", 1)
 SafeAddString(NOTYOU_NOREPORTONITEMS_TOOLTIP,		"Ne pas afficher l'entrée \"Demander Aide\" pour les objets. Cette entrée est utilisée pour signaler un objet à ZOS", 1)
+
+SafeAddString(NOTYOU_NOBINDALERT,						"Désactiver la confirmation d'objets liés", 1)
+SafeAddString(NOTYOU_NOBINDALERT_TOOLTIP,				"Ne pas afficher la fenêtre de confirmation lorsque vous tentez d'équipper un objet lié à l'équipement", 1)
+
+SafeAddString(NOTYOU_NOPORTONLEADER,					"Désactiver la fenêtre de téléportation vers le chef", 1)
+SafeAddString(NOTYOU_NOPORTONLEADER_TOOLTIP,			"Ne pas afficher la fenêtre de confirmation de téléportation vers le chef de groupe", 1)
+
+SafeAddString(NOTY_NOPORTONLEADER_0,					"Jamais", 1)
+SafeAddString(NOTY_NOPORTONLEADER_1,					"Si la destination n'est pas atteignable", 1)
+SafeAddString(NOTY_NOPORTONLEADER_2,					"Toujours", 1)
 
 SafeAddString(NOTYOU_TAMRIEL,								"Tout masquer sur la carte de Tamriel", 1)
 SafeAddString(NOTYOU_TAMRIEL_TOOLTIP,					"N'afficher aucune icône sur la carte de Tamriel", 1)
