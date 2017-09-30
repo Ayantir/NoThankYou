@@ -10,6 +10,7 @@ SafeAddString(NOTY_INSECT_FLESHFLIES,					"Mouches à viande", 1) -- Don't chang
 SafeAddString(NOTY_INSECT_DRAGONFLY,					"Libellule", 1) -- Don't change
 SafeAddString(NOTY_INSECT_NETCHCALF,					"Jeune netch", 1) -- Don't change
 SafeAddString(NOTY_INSECT_FETCHERFLY,					"Mouche chercheuse", 1) -- Don't change
+SafeAddString(NOTY_INSECT_DOVAH,							"Mouche dovah de Seht", 1) -- Don't change
 
 SafeAddString(NOTY_ENTERING_GROUP_AREA,				"Vous entrez dans une zone de groupe.", 1) -- Don't change
 SafeAddString(NOTY_LEAVING_GROUP_AREA,					"Sortie de la zone de groupe.", 1) -- Don't change

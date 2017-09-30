@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "7.4"
+local ADDON_VERSION = "8"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -344,7 +344,11 @@ local function DeleteEmptyMailHook()
 	local function ShowDialog_Hook(name, data)
 		if name == "DELETE_MAIL" then
 			if SV.emptyMail then
-				MAIL_INBOX:ConfirmDelete(MAIL_INBOX.mailId)
+				if IsInGamepadPreferredMode() then
+					MAIL_MANAGER_GAMEPAD.inbox:Delete()
+				else
+					MAIL_INBOX:ConfirmDelete(MAIL_INBOX.mailId)
+				end
 				return true
 			end
 		end
@@ -632,7 +636,8 @@ local function HookReticleTake()
 						or interactableName == GetString(NOTY_INSECT_FLESHFLIES)
 						or interactableName == GetString(NOTY_INSECT_DRAGONFLY)
 						or interactableName == GetString(NOTY_INSECT_NETCHCALF)
-						or interactableName == GetString(NOTY_INSECT_FETCHERFLY))
+						or interactableName == GetString(NOTY_INSECT_FETCHERFLY)
+						or interactableName == GetString(NOTY_INSECT_DOVAH))
 						then
 							return true
 						end
