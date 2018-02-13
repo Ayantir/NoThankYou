@@ -48,11 +48,9 @@ SafeAddString(NOTY_MOTD_OPTION_0,					"keine", 1)
 SafeAddString(NOTY_MOTD_OPTION_1,					"Chatnachricht", 1)
 SafeAddString(NOTY_MOTD_OPTION_2,					"stumm", 1)
 
-SafeAddString(NOTY_LUAMEM_OPTION_0,					"Mitteilung", 1)
-SafeAddString(NOTY_LUAMEM_OPTION_1,					"Dialog", 1)
-
 SafeAddString(NOTY_LUAERR_OPTION_0,					"keine", 1)
 SafeAddString(NOTY_LUAERR_OPTION_1,					"Mitteilung", 1)
+SafeAddString(NOTY_LUAERR_OPTION_2,					"Chatnachricht", 1)
 
 SafeAddString(NOTYOU_LUAERR_MESSAGE,				"Lua Fehler ausgelöst!", 1)
 SafeAddString(NOTYOU_LUAERR_HEADING,				"Lua Fehler", 1)
@@ -124,6 +122,8 @@ SafeAddString(NOTYOU_CHAT_TOOLTIP,					"Blendet das Freunde-Symbol oberhalb des 
 SafeAddString(NOTYOU_RETICLE_HEADER,				"Sammeln", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE,					"Sammeln verkürzen:", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE_TOOLTIP,		"Überspringt die \"Nehmen\"-Interaktion für gesammelte Insekten.", 1) -- Scootworks
+SafeAddString(NOTYOU_EMPTY_INTERACT,				"Bei leeren Behältern die Interaktion unterbinden", 1)
+SafeAddString(NOTYOU_EMPTY_INTERACT_TOOLTIP,		"Zeigt den Text für Interaktionen nicht an, wenn der Behälter leer ist.", 1)
 
 SafeAddString(NOTYOU_NOREPORTONITEMS,				"Für Gegenstände \"Hilfe erhalten\" nicht anzeigen", 1)
 SafeAddString(NOTYOU_NOREPORTONITEMS_TOOLTIP,	"Für Gegenstände \"Hilfe erhalten\" nicht anzeigen. Wird verwendet um ZOS Gegenstände zu melden.", 1)

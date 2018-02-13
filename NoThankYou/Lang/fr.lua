@@ -52,11 +52,9 @@ SafeAddString(NOTY_MOTD_OPTION_0,						"Aucune", 1)
 SafeAddString(NOTY_MOTD_OPTION_1,						"Chat", 1)
 SafeAddString(NOTY_MOTD_OPTION_2,						"Silencieux", 1)
 
-SafeAddString(NOTY_LUAMEM_OPTION_0,						"Notification", 1)
-SafeAddString(NOTY_LUAMEM_OPTION_1,						"Fenêtre de mise à jour", 1)
-
 SafeAddString(NOTY_LUAERR_OPTION_0,						"Aucune", 1)
 SafeAddString(NOTY_LUAERR_OPTION_1,						"Notification", 1)
+SafeAddString(NOTY_LUAERR_OPTION_2,						"Chat", 1)
 
 SafeAddString(NOTYOU_LUAERR_MESSAGE,					"Erreur Lua survenue", 1)
 SafeAddString(NOTYOU_LUAERR_HEADING,					"Erreur Lua", 1)
@@ -135,6 +133,8 @@ SafeAddString(NOTYOU_CHAT_TOOLTIP,						"Activer la disparition de l'icône des 
 SafeAddString(NOTYOU_RETICLE_HEADER,					"Cible", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE,						"Désactiver l'interaction avec les insectes", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE_TOOLTIP,			"Désactive l'action \"Prendre\" pour collecter les insectes.", 1)
+SafeAddString(NOTYOU_EMPTY_INTERACT,					"Désactiver l'intéraction lorsque le conteneur est vide", 1)
+SafeAddString(NOTYOU_EMPTY_INTERACT_TOOLTIP,			"Désactiver le texte de l'intéraction lorsque le conteneur est vide.", 1)
 
 SafeAddString(NOTYOU_NOWRITQUESTS,						"Désactiver les quêtes de commande de maître automatiques", 1)
 SafeAddString(NOTYOU_NOWRITQUESTS_TOOLTIP,			"Ne pas afficher les quêtes de commande de maître automatiquement lorsque vous lootez une commande de maître", 1)

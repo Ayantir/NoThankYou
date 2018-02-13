@@ -51,11 +51,9 @@ local strings = {
 	NOTY_GUILDLEAVE_OPTION_1 = "All Guilds",
 	NOTY_GUILDLEAVE_OPTION_2 = "Per Guild",
 	
-	NOTY_LUAMEM_OPTION_0 = "Notification",
-	NOTY_LUAMEM_OPTION_1 = "Dialog",
-	
 	NOTY_LUAERR_OPTION_0 = "none",
 	NOTY_LUAERR_OPTION_1 = "Notification",
+	NOTY_LUAERR_OPTION_2 = "chat message",
 	
 	NOTYOU_LUAERR_MESSAGE = "Lua Error triggered",
 	NOTYOU_LUAERR_HEADING = "Lua Error",
@@ -130,6 +128,9 @@ local strings = {
 	NOTYOU_RETICLE_HEADER = "Reticle",
 	NOTYOU_RETICLE_TAKE = "Disable reticle for insects",
 	NOTYOU_RETICLE_TAKE_TOOLTIP = "Disable the \"Take\" interaction for collecting butterflies, etc.",
+	
+	NOTYOU_EMPTY_INTERACT = "Disable interaction when the crate is empty",
+	NOTYOU_EMPTY_INTERACT_TOOLTIP = "Disable the interaction text when the targetted crate is empty.",
 	
 	NOTYOU_NOREPORTONITEMS = "Don't show \"Get Help\" entry for Items",
 	NOTYOU_NOREPORTONITEMS_TOOLTIP = "Don't show \"Get Help\" entry for Items. This entry is used to report an item to ZOS.",

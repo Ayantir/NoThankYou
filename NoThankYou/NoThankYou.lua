@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "8"
+local ADDON_VERSION = "9"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -78,6 +78,7 @@ local defaults = {
 	chatForTradingHouse = false,
 	noBindAlert = false,
 	noPortOnLeader = 0,
+	emptyInteractions = false,
 }
 
 for i = 1, MAX_GUILDS do
@@ -289,8 +290,6 @@ local function CraftingResultAlertsHook()
 		[SI_SMITHING_CLOTHIER_EXTRACTION_FAILED] = true,
 		[SI_SMITHING_WOODWORKING_EXTRACTION_FAILED] = true,
 		[SI_SMITHING_DECONSTRUCTION_LEVEL_PENALTY] = true,
-		[SI_SMITHING_IMPROVEMENT_SUCCESS] = true,
-		[SI_SMITHING_IMPROVEMENT_FAILED] = true,
 		[SI_ALCHEMY_NO_YIELD] = true,
 		[SI_ENCHANT_NO_YIELD] = true,
 	}
@@ -626,21 +625,33 @@ end
 local function HookReticleTake()
 	local function DisableReticleTake_Hook(interactionPossible)
 		if interactionPossible then
-			if SV.reticleTake then
-				local action, interactableName = GetGameCameraInteractableActionInfo()
+			if SV.reticleTake or SV.emptyInteractions then
+				local action, interactableName, interactionBlocked, _, additionalInteractInfo = GetGameCameraInteractableActionInfo()
 				if action and interactableName then
 					if (action == GetString(NOTY_INTERACTION_TAKE)) then
-						if (interactableName == GetString(NOTY_INSECT_BUTTERFLY)
-						or interactableName == GetString(NOTY_INSECT_TORCHBUG)
-						or interactableName == GetString(NOTY_INSECT_WASP)
-						or interactableName == GetString(NOTY_INSECT_FLESHFLIES)
-						or interactableName == GetString(NOTY_INSECT_DRAGONFLY)
-						or interactableName == GetString(NOTY_INSECT_NETCHCALF)
-						or interactableName == GetString(NOTY_INSECT_FETCHERFLY)
-						or interactableName == GetString(NOTY_INSECT_DOVAH))
-						then
+						if SV.reticleTake then
+							if (interactableName == GetString(NOTY_INSECT_BUTTERFLY)
+							or interactableName == GetString(NOTY_INSECT_TORCHBUG)
+							or interactableName == GetString(NOTY_INSECT_WASP)
+							or interactableName == GetString(NOTY_INSECT_FLESHFLIES)
+							or interactableName == GetString(NOTY_INSECT_DRAGONFLY)
+							or interactableName == GetString(NOTY_INSECT_NETCHCALF)
+							or interactableName == GetString(NOTY_INSECT_FETCHERFLY)
+							or interactableName == GetString(NOTY_INSECT_DOVAH))
+							then
+								return true
+							end
+						end
+					elseif SV.emptyInteractions and interactionBlocked then
+						
+						local dontShow = {
+							[ADDITIONAL_INTERACT_INFO_EMPTY] = true
+						}
+						
+						if dontShow[additionalInteractInfo] then
 							return true
 						end
+						
 					end
 				end
 			end
@@ -830,6 +841,8 @@ local function DontRotateGameCamera()
 		FRAME_EMOTE_FRAGMENT_SYSTEM,
 		FRAME_EMOTE_FRAGMENT_LOOT,
 		FRAME_EMOTE_FRAGMENT_CHAMPION,
+		FRAME_EMOTE_FRAGMENT_CROWN_STORE,
+		FRAME_EMOTE_FRAGMENT_CROWN_CRATES,
 	}
 	
 	local blacklistedScenes = {
@@ -840,6 +853,7 @@ local function DontRotateGameCamera()
 		gamepad_housing_furniture_scene = true,
 		dyeStampConfirmationGamepad = true,
 		dyeStampConfirmationKeyboard = true,
+		outfitStylesBook = true,
 	}
 	
 	if SV.noCameraSpin then
@@ -1171,7 +1185,7 @@ end
 
 local function HandleLuaErrorEvent()
 
-	if SV.luaError == 1 then
+	if SV.luaError >= 1 then
 		
 		--unregister original handler
 		EVENT_MANAGER:UnregisterForEvent("ErrorFrame", EVENT_LUA_ERROR)
@@ -1182,44 +1196,51 @@ local function HandleLuaErrorEvent()
 		local function OnLuaError(_, errString)
 			
 			-- Display a notification
-			local LNTF = LibStub("LibNotifications")
-			local provider = LNTF:CreateProvider()
-			
-			local function RemoveNotification(data)
-				table.remove(provider.notifications, data.notificationId)
-				provider:UpdateNotifications()
-			end
-			
-			if not seenBugs[errString] then
-			
-				local msg = {
-					dataType						= NOTIFICATIONS_REQUEST_DATA,
-					secsSinceRequest			= ZO_NormalizeSecondsSince(0),
-					message						= GetString(NOTYOU_LUAERR_MESSAGE),
-					note							= errString,
-					heading						= GetString(NOTYOU_LUAERR_HEADING),
-					texture						= "/esoui/art/miscellaneous/eso_icon_warning.dds",
-					shortDisplayText			= GetString(NOTYOU_LUAERR_SHORT),
-					controlsOwnSounds			= true,
-					keyboardAcceptCallback	= function(data)
-						ZO_ERROR_FRAME:OnUIError(errString)
-						RemoveNotification(data)
-					end,
-					keybaordDeclineCallback	= RemoveNotification,
-					gamepadAcceptCallback	= function(data)
-						ZO_ERROR_FRAME:OnUIError(errString)
-						RemoveNotification(data)
-					end,
-					gamepadDeclineCallback	= RemoveNotification,
-					data							= {errString = errString},
-				}
+			if SV.luaError == 1 then
+
+				local LNTF = LibStub("LibNotifications")
+				local provider = LNTF:CreateProvider()
 				
-				table.insert(provider.notifications, msg)
-				provider:UpdateNotifications()
-				seenBugs[errString] = true
-			
+				local function RemoveNotification(data)
+					table.remove(provider.notifications, data.notificationId)
+					provider:UpdateNotifications()
+				end
+				
+				if not seenBugs[errString] then
+				
+					local msg = {
+						dataType						= NOTIFICATIONS_REQUEST_DATA,
+						secsSinceRequest			= ZO_NormalizeSecondsSince(0),
+						message						= GetString(NOTYOU_LUAERR_MESSAGE),
+						note							= errString,
+						heading						= GetString(NOTYOU_LUAERR_HEADING),
+						texture						= "/esoui/art/miscellaneous/eso_icon_warning.dds",
+						shortDisplayText			= GetString(NOTYOU_LUAERR_SHORT),
+						controlsOwnSounds			= true,
+						keyboardAcceptCallback	= function(data)
+							ZO_ERROR_FRAME:OnUIError(errString)
+							RemoveNotification(data)
+						end,
+						keybaordDeclineCallback	= RemoveNotification,
+						gamepadAcceptCallback	= function(data)
+							ZO_ERROR_FRAME:OnUIError(errString)
+							RemoveNotification(data)
+						end,
+						gamepadDeclineCallback	= RemoveNotification,
+						data							= {errString = errString},
+					}
+					
+					table.insert(provider.notifications, msg)
+					provider:UpdateNotifications()
+					seenBugs[errString] = true
+				
+				end
+			elseif SV.luaError == 2 then
+				if not seenBugs[errString] then
+					d(errString)
+					seenBugs[errString] = true
+				end
 			end
-			
 		end
 		
 		EVENT_MANAGER:RegisterForEvent("LUA_ERROR", EVENT_LUA_ERROR, OnLuaError)
@@ -1271,8 +1292,8 @@ local function BuildSettingsMenu()
 	local guildLeaveMode = { GetString(NOTY_GUILDLEAVE_OPTION_0), GetString(NOTY_GUILDLEAVE_OPTION_1), GetString(NOTY_GUILDLEAVE_OPTION_2) }
 	local guildLeaveModeLookup = { [GetString(NOTY_GUILDLEAVE_OPTION_0)] = 0, [GetString(NOTY_GUILDLEAVE_OPTION_1)] = 1, [GetString(NOTY_GUILDLEAVE_OPTION_2)] = 2 }
 
-	local luaError = { GetString(NOTY_LUAERR_OPTION_0), GetString(NOTY_LUAERR_OPTION_1) }
-	local luaErrorLookup = { [GetString(NOTY_LUAERR_OPTION_0)] = 0, [GetString(NOTY_LUAERR_OPTION_1)] = 1 }
+	local luaError = { GetString(NOTY_LUAERR_OPTION_0), GetString(NOTY_LUAERR_OPTION_1), GetString(NOTY_LUAERR_OPTION_2) }
+	local luaErrorLookup = { [GetString(NOTY_LUAERR_OPTION_0)] = 0, [GetString(NOTY_LUAERR_OPTION_1)] = 1, [GetString(NOTY_LUAERR_OPTION_2)] = 2 }
 
 	local tamrielWayhsrines = { GetString(NOTY_WAYSHRINE_OPTION_0), GetString(NOTY_WAYSHRINE_OPTION_1), GetString(NOTY_WAYSHRINE_OPTION_2) }
 	local tamrielWayhsrinesLookup = { [GetString(NOTY_WAYSHRINE_OPTION_0)] = 0, [GetString(NOTY_WAYSHRINE_OPTION_1)] = 1, [GetString(NOTY_WAYSHRINE_OPTION_2)] = 2 }
@@ -1412,7 +1433,7 @@ local function BuildSettingsMenu()
 		--Hide market announcement
 		{
 			type = "header",
-			name = ZO_HIGHLIGHT_TEXT:Colorize(GetString(SI_GAMEPAD_MAIN_MENU_MARKET_ENTRY)),
+			name = ZO_HIGHLIGHT_TEXT:Colorize(GetString(SI_GAMEPAD_MAIN_MENU_CROWN_STORE_CATEGORY)),
 		},
 		{
 			type = "checkbox",
@@ -1530,6 +1551,15 @@ local function BuildSettingsMenu()
 			setFunc = function(value) SV.reticleTake = value end,
 			default = defaults.reticleTake,
 		},
+		{
+			type = "checkbox",
+			name = GetString(NOTYOU_EMPTY_INTERACT),
+			tooltip = GetString(NOTYOU_EMPTY_INTERACT_TOOLTIP),
+			getFunc = function() return SV.emptyInteractions end,
+			setFunc = function(value) SV.emptyInteractions = value end,
+			default = defaults.emptyInteractions,
+		},
+		
 		-- Auto Loot Items
 		{
 			type = "header",

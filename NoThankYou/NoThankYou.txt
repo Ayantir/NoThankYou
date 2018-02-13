@@ -7,8 +7,8 @@
 ## Title: |cEFEBBENo, thank you!|r
 ## Author: |cEFEBBEGarkin|r & Ayantir
 ## Description: Handles unwanted messages, alerts, dialogs and notifications.
-## APIVersion: 100020 100021
-## Version: 8
+## APIVersion: 100022
+## Version: 9
 ## SavedVariables: NO_THANK_YOU_VARS
 ## OptionalDependsOn: LibAddonMenu-2.0
 
