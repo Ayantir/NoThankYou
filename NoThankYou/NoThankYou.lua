@@ -25,7 +25,7 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 ]]
 
 local ADDON_NAME = "NoThankYou"
-local ADDON_VERSION = "9"
+local ADDON_VERSION = "9.1"
 local ADDON_AUTHOR = "Ayantir & Garkin"
 local ADDON_WEBSITE = "http://www.esoui.com/downloads/info865-Nothankyou.html"
 
@@ -841,8 +841,6 @@ local function DontRotateGameCamera()
 		FRAME_EMOTE_FRAGMENT_SYSTEM,
 		FRAME_EMOTE_FRAGMENT_LOOT,
 		FRAME_EMOTE_FRAGMENT_CHAMPION,
-		FRAME_EMOTE_FRAGMENT_CROWN_STORE,
-		FRAME_EMOTE_FRAGMENT_CROWN_CRATES,
 	}
 	
 	local blacklistedScenes = {
@@ -856,32 +854,36 @@ local function DontRotateGameCamera()
 		outfitStylesBook = true,
 	}
 	
-	if SV.noCameraSpin then
-		for name, scene in pairs(SCENE_MANAGER.scenes) do
-			if not blacklistedScenes[name] then
-				local sceneToSave = true
-				for _, fragmentToRemove in ipairs(emotesFragments) do
-					if scene:HasFragment(fragmentToRemove) then
-						scene:RemoveFragment(fragmentToRemove)
-						if sceneToSave then
-							sceneToSave = false
-							scenes[name] = scene
-							scenes[name].toRestore = {}
+	local function ChangeScenesBehavior(disableFragments)
+		if disableFragments then
+			for name, scene in pairs(SCENE_MANAGER.scenes) do
+				if not blacklistedScenes[name] then
+					local sceneToSave = true
+					for _, fragmentToRemove in ipairs(emotesFragments) do
+						if scene:HasFragment(fragmentToRemove) then
+							scene:RemoveFragment(fragmentToRemove)
+							if sceneToSave then
+								sceneToSave = false
+								scenes[name] = scene
+								scenes[name].toRestore = {}
+							end
+							table.insert(scenes[name].toRestore, fragmentToRemove)
 						end
-						table.insert(scenes[name].toRestore, fragmentToRemove)
+					end
+				end
+			end
+		else
+			for name, scene in pairs(scenes) do
+				if scene.toRestore then
+					for index, fragment in ipairs(scene.toRestore) do
+						scene:AddFragment(fragment)
 					end
 				end
 			end
 		end
-	else
-		for name, scene in pairs(scenes) do
-			if scene.toRestore then
-				for index, fragment in ipairs(scene.toRestore) do
-					scene:AddFragment(fragment)
-				end
-			end
-		end
 	end
+	
+	ChangeScenesBehavior(SV.noCameraSpin)	
 	
 end
 
@@ -978,7 +980,7 @@ end
 local function HookMarketAnnouncement()
 	if SCENE_MANAGER.scenes.marketAnnouncement then
 		local function SetState_Hook(self, state, ...)
-			if state == SCENE_SHOWING then
+			if state == SCENE_SHOWN then
 				if SV.marketAnnouncement then
 					SCENE_MANAGER:ShowBaseScene()
 				end
