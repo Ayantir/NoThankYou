@@ -212,9 +212,6 @@ local strings = {
 	
 	NOTYOU_NOLOREREADER = "Don't read discovered books",
 	NOTYOU_NOLOREREADER_TOOLTIP = "Won't display the book you just discovered, except in the library",
-	
-	NOTYOU_NOLOREREADER = "Don't read discovered books",
-	NOTYOU_NOLOREREADER_TOOLTIP = "Select how you want to handle Lore Library messages:\n|cFFFFFFnone|r - no changes to Lore Library messages\n|cFFFFFFchat message|r - messages are redirected to the chat\n|cFFFFFFsilent|r - messages are completely removed",
 
 	NOTYOU_NOLOREDISCOVERIES = "Block Message \"Lorebook Discovered\"",
 	NOTYOU_NOLOREDISCOVERIES_TOOLTIP = "Select how you want to handle Lore Library messages:\n|cFFFFFFnone|r - no changes to Lore Library messages\n|cFFFFFFchat message|r - messages are redirected to the chat\n|cFFFFFFsilent|r - messages are completely removed",
