@@ -115,10 +115,6 @@ SafeAddString(NOTYOU_CHAMELEON_HEADER,				"Kronen-Mimenstein", 1)
 SafeAddString(NOTYOU_CHAMELEON,						"Verstecke die Kronen-Momenstein Checkbox", 1) -- Scootworks
 SafeAddString(NOTYOU_CHAMELEON_TOOLTIP,			"Verstecke die Kronen-Momenstein Checkbox wenn du keine Steine besitzt", 1) -- Scootworks
 
-SafeAddString(NOTYOU_CHAT_HEADER,					"Freunde-Symbol", 1)
-SafeAddString(NOTYOU_CHAT,								"Freunde-Symbol ausblenden:", 1)
-SafeAddString(NOTYOU_CHAT_TOOLTIP,					"Blendet das Freunde-Symbol oberhalb des Chatfensters aus.", 1)
-
 SafeAddString(NOTYOU_RETICLE_HEADER,				"Sammeln", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE,					"Sammeln verkürzen:", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE_TOOLTIP,		"Überspringt die \"Nehmen\"-Interaktion für gesammelte Insekten.", 1) -- Scootworks

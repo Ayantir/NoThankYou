@@ -126,10 +126,6 @@ SafeAddString(NOTYOU_CHAMELEON_HEADER,					"Pierre caméléon à Couronnes", 1)
 SafeAddString(NOTYOU_CHAMELEON,							"Masquer la case Pierre caméléon à Couronnes", 1)
 SafeAddString(NOTYOU_CHAMELEON_TOOLTIP,				"Masque la case Pierre caméléon à Couronne lorsque vous n'en avez pas", 1)
 
-SafeAddString(NOTYOU_CHAT_HEADER,						"Icônes du Chat", 1)
-SafeAddString(NOTYOU_CHAT,									"Faire disparaitre l'icône des amis connectés", 1)
-SafeAddString(NOTYOU_CHAT_TOOLTIP,						"Activer la disparition de l'icône des amis connectés en haut de la fenêtre de Chat.", 1)
-
 SafeAddString(NOTYOU_RETICLE_HEADER,					"Cible", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE,						"Désactiver l'interaction avec les insectes", 1)
 SafeAddString(NOTYOU_RETICLE_TAKE_TOOLTIP,			"Désactive l'action \"Prendre\" pour collecter les insectes.", 1)

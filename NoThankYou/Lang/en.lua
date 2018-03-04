@@ -120,11 +120,7 @@ local strings = {
 	NOTYOU_CHAMELEON_HEADER = "Crown Mimic Stones",
 	NOTYOU_CHAMELEON = "Hide the Crown Mimic Stones checkbox",
 	NOTYOU_CHAMELEON_TOOLTIP = "Hide the Crown Mimic Stones checkbox when you don't have any of them",
-	
-	NOTYOU_CHAT_HEADER = "Chat System Button",
-	NOTYOU_CHAT = "Fade friends button",
-	NOTYOU_CHAT_TOOLTIP = "Enable fade out for friend button above chat window.",
-	
+
 	NOTYOU_RETICLE_HEADER = "Reticle",
 	NOTYOU_RETICLE_TAKE = "Disable reticle for insects",
 	NOTYOU_RETICLE_TAKE_TOOLTIP = "Disable the \"Take\" interaction for collecting butterflies, etc.",
